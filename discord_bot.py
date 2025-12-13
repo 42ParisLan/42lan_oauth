@@ -51,16 +51,19 @@ bot = commands.Bot(command_prefix="!", intents=intents)
 @bot.event
 async def on_ready():
     
+    activity = discord.Game(name="Rocket League",)
+    await bot.change_presence(status=discord.Status.online, activity=activity)
+
     channel = bot.get_channel(AUTH_CHANNEL_ID)
     if channel:
         try:
-            auth_message_content = "🤖 **Authentification 42**" # Contenu partiel pour la vérification
+            auth_message_content_key = "Cliquez sur le bouton ci-dessous."
             
             history = [msg async for msg in channel.history(limit=5)] 
             
-            if not any(auth_message_content in m.content for m in history if m.author == bot.user):
+            if not any(auth_message_content_key in m.content for m in history if m.author == bot.user):
                 await channel.send(
-                    "Cliquez sur le bouton ci-dessous. Vous recevrez un lien pour vous connecter grace à l'Intra de 42.", 
+                    auth_message_content_key + " Vous recevrez un lien pour vous connecter grace à l'Intra de 42.", 
                     view=AuthButton(bot)
                 )
             else:
