@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  flask-server:
+    build:
+      context: .
+      dockerfile: Dockerfile.server
+    container_name: 42lan-oauth-server
+    environment:
+      - DISCORD_TOKEN=${DISCORD_TOKEN}
+      - AUTH_CHANNEL_ID=${AUTH_CHANNEL_ID}
+      - GUILD_ID=${GUILD_ID}
+      - VERIFIED_ROLE_ID=${VERIFIED_ROLE_ID}
+      - CLIENT_ID_42=${CLIENT_ID_42}
+      - CLIENT_SECRET_42=${CLIENT_SECRET_42}
+      - REDIRECT_URI=${REDIRECT_URI}
+      - FLASK_PORT=${FLASK_PORT:-8484}
+    ports:
+      - "8484:8484"
+    env_file:
+      - .env
+    restart: unless-stopped
+
+  discord-bot:
+    build:
+      context: .
+      dockerfile: Dockerfile.bot
+    container_name: 42lan-oauth-bot
+    environment:
+      - DISCORD_TOKEN=${DISCORD_TOKEN}
+      - AUTH_CHANNEL_ID=${AUTH_CHANNEL_ID}
+      - GUILD_ID=${GUILD_ID}
+      - VERIFIED_ROLE_ID=${VERIFIED_ROLE_ID}
+      - CLIENT_ID_42=${CLIENT_ID_42}
+      - CLIENT_SECRET_42=${CLIENT_SECRET_42}
+      - REDIRECT_URI=${REDIRECT_URI}
+    env_file:
+      - .env
+    restart: unless-stopped
+    depends_on:
+      - flask-server

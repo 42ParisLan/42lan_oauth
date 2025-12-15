@@ -1,7 +1,19 @@
 from flask import Flask, request, redirect, jsonify
 import requests
 import urllib.parse
-from config import *
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+DISCORD_TOKEN = os.getenv('DISCORD_TOKEN')
+AUTH_CHANNEL_ID = int(os.getenv('AUTH_CHANNEL_ID'))
+GUILD_ID = int(os.getenv('GUILD_ID'))
+VERIFIED_ROLE_ID = int(os.getenv('VERIFIED_ROLE_ID'))
+CLIENT_ID_42 = os.getenv('CLIENT_ID_42')
+CLIENT_SECRET_42 = os.getenv('CLIENT_SECRET_42')
+REDIRECT_URI = os.getenv('REDIRECT_URI')
+
 app = Flask(__name__)
 
 API_42_URL = 'https://api.intra.42.fr'
@@ -84,4 +96,5 @@ def auth_callback():
 
 # Flask
 if __name__ == '__main__':
-    app.run(debug=True, port=8484)
+    port = int(os.getenv('FLASK_PORT', 8484))
+    app.run(debug=True, port=port, host='0.0.0.0')
