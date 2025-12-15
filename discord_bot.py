@@ -2,7 +2,16 @@ import discord
 from discord.ext import commands
 from discord import ui
 import urllib.parse
-from config import *
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+DISCORD_TOKEN = os.getenv('DISCORD_TOKEN')
+AUTH_CHANNEL_ID = int(os.getenv('AUTH_CHANNEL_ID'))
+GUILD_ID = int(os.getenv('GUILD_ID'))
+CLIENT_ID_42 = os.getenv('CLIENT_ID_42')
+REDIRECT_URI = os.getenv('REDIRECT_URI')
 
 intents = discord.Intents.default()
 intents.members = True
